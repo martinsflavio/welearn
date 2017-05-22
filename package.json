@@ -1,0 +1,35 @@
+{
+  "name": "project-manager",
+  "version": "0.0.1",
+  "description": "project organizer app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinsflavio/project-Manager.git"
+  },
+  "author": "Arezoo Tajer, Flavio Martins, Rick Grams",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martinsflavio/project-Manager/issues"
+  },
+  "homepage": "https://github.com/martinsflavio/project-Manager#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.17.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.3",
+    "express-validator": "^3.2.0",
+    "method-override": "^2.3.8",
+    "mysql": "^2.13.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "sequelize": "^3.30.4"
+  }
+}
