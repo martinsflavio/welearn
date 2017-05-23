@@ -14,7 +14,7 @@ router.get('/project/search', (req,res) => {
 
 // search btn
 router.post('/project/search', (req,res) => {
-  let query = {};
+  let query;
   let errors;
 
   // Validation
@@ -30,17 +30,11 @@ router.post('/project/search', (req,res) => {
     req.flash('error_msg', 'Project Title Required!');
     res.redirect('/user/project/search');
   } else {
-
     db.Projects.findAll(query).then(projects => {
-
       res.render('search', projects);
-
     }).catch(err => {
-
       res.render('error',err);
-
     })
-
   }
 });
 
@@ -54,7 +48,6 @@ router.get('/project/form', (req,res) => {
 
 //  add project
 router.post('/project/new/:userid', (req,res) => {
-  let userId;
   let errors;
   let newProject = {};
 
@@ -90,7 +83,12 @@ router.get('/project/open/:projid', (req,res) => {
   let projId = req.params.projid;
   let query = {
     where:{id: projId},
-    include: [db.Proposals,db.Comments]
+    include: [
+      {model: db.Comments,
+        include:[{model: db.Users, attributes: ['username']}]},
+      {model: db.Proposals,
+        include:[{model: db.Users, attributes:['username']}]}
+    ]
   };
 
   db.Projects.findOne(query).then(regProject => {
@@ -98,7 +96,7 @@ router.get('/project/open/:projid', (req,res) => {
 
     res.render('project',project);
   }).catch(err => {
-    res.render('err',err);
+    res.render('error',err);
   });
 
 });
@@ -111,7 +109,6 @@ router.get('/project/all', (req,res) =>{
   };
 
   db.Projects.findAll(query).then(allProjects => {
-    console.log(allProjects);
     res.render('all-projects', allProjects);
   }).catch(err => {
     res.render('error', err);

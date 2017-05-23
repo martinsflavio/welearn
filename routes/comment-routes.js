@@ -6,6 +6,8 @@ const express     = require('express'),
 
 
 /////////////////// proposal forms ///////////////////////////////
+//(TODO) IMPLEMENT SOCKET.OI FOR REAL TIME FEEDBACK
+
 router.post('/comment/new/:userid/:projid', (req,res) => {
   let errors;
   let newComment = {};
@@ -15,27 +17,25 @@ router.post('/comment/new/:userid/:projid', (req,res) => {
 
   errors = req.validationErrors();
 
-
   if(errors){
     res.render('project',{msg:errors});
   } else {
-    newComment.UserId      = req.params.userid;
-    newComment.ProjectId   = req.params.projid;
-    newComment.doby        = req.body.body;
-  }
 
+    newComment.body       = req.body.body;
+    newComment.ProjectId  = req.params.projid;
+    newComment.UserId     = req.params.userid;
 
-  db.Proposals.create(newComment).then(regProposal => {
-    let projId = regProposal.dataValues.ProjectId;
+    console.log(newComment);
 
-    res.redirect(`/user/project/open/${projId}`);
-  }).catch(err => {
-    let errorsList = [];
-    err.errors.forEach(dbErrors =>{
-      errorsList.push({msg : dbErrors.message});
+    db.Comments.create(newComment).then(regComment => {
+      let projId = regComment.dataValues.ProjectId;
+
+     res.redirect(`/user/project/open/${projId}`);
+    }).catch(err => {
+      res.render('error',err);
     });
-    res.render('project',{errors:errors});
-  });
+
+  }
 
 });
 

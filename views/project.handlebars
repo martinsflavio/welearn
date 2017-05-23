@@ -1,77 +1,67 @@
+<style>
+	div {
+		border-style: solid;
+		border-width: 1px;
+		border-color: aqua;
+	}
+</style>
+
+<!-- Project Title -->
 <div class="page-header">
 	<h2>{{this.subject}}</h2>
 </div>
 
-<div class="row">
-	<h3>Description</h3>
-	<p>{{this.description}}</p>
-</div>
-
-
+<!-- Error handler -->
 {{#if errors}}
 	{{#each errors}}
 		<div class="alert alert-danger">{{msg}}</div>
 	{{/each}}
 {{/if}}
 
-
-<!-- Proposal form -->
 <div class="row">
-	<div class="col-sm-6">
-		<h3>Proposals</h3>
-		<form method="post" action="/user/proposal/new/{{user.id}}/{{this.id}}">
-			<div class="form-group">
-				<label>Title</label>
-				<input type="text" class="form-control" placeholder="Title" name="subject">
-			</div>
-			<div class="form-group">
-				<label>Description</label>
-				<textarea class="form-control" name="body" rows="3"></textarea>
-			</div>
-			<button type="submit" class="btn btn-default">Create</button>
-		</form>
-		<hr>
-
-		<!-- List of Proposals -->
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<ul>
-					{{#each Proposals}}
-						<li>
-							<h5>{{this.subject}}</h5>
-							<p>{{this.body}}</p>
-							<hr>
-						</li>
-					{{/each}}
-				</ul>
-			</div>
+	<!-- Project Description -->
+	<div class="col-sm-3">
+		<div class="row">
+			<h3>Description</h3>
+			<p>{{this.description}}</p>
 		</div>
+
+		<!-- Add attachment -->
+		<div class="row">
+			add attachment
+		</div>
+
 	</div>
 
 
-	<div class="col-sm-6">
+	<!-- Comments -->
+	<div class="col-sm-5">
 		<h3>Comments</h3>
-		<form method="post" action="/user/comments/new/{{user.id}}/{{this.id}}">
-			<div class="form-group">
-				<label>Description</label>
-				<textarea class="form-control" name="body" rows="3"></textarea>
-			</div>
-			<button type="submit" class="btn btn-default">Send</button>
-		</form>
-		<hr>
-		<!-- List of Comments -->
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<ul>
+				<div class="panel-body">
 					{{#each Comments}}
-						<li>
-							<p>{{this.body}}</p>
-							<hr>
-						</li>
+						<p><strong>{{this.User.username}}:</strong> {{this.body}}</p>
 					{{/each}}
-				</ul>
+				</div>
+				<form  method="post" action="/user/comment/new/{{user.id}}/{{this.id}}">
+					<input type="text" class="form-control" placeholder="Text input" name="body">
+					<button type="submit" class="btn btn-success btn-sm pull-right">Send</button>
+				</form>
 			</div>
 		</div>
 	</div>
+
+	<!-- Proposals -->
+	<div class="col-sm-4">
+		<h3>Proposals</h3>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				{{#each Proposals}}
+					<p>{{this.body}}</p>
+				{{/each}}
+			</div>
+		</div>
 	</div>
+
 </div>

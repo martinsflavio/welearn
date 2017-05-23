@@ -31,8 +31,8 @@
 						{{#each user.proposals}}
 							<li role="presentation">
 								<a href="/user/project/open/{{this.ProjectId}}">
-									{{this.body}}
-									{{this.descripiton}}
+									{{this.subject}}
+									<p>{{this.body}}</p>
 									<p>Agree: {{this.agree}} | Disagree:{{this.disagree}}</p>
 									<hr>
 								</a>
