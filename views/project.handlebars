@@ -1,0 +1,77 @@
+<div class="page-header">
+	<h2>{{this.subject}}</h2>
+</div>
+
+<div class="row">
+	<h3>Description</h3>
+	<p>{{this.description}}</p>
+</div>
+
+
+{{#if errors}}
+	{{#each errors}}
+		<div class="alert alert-danger">{{msg}}</div>
+	{{/each}}
+{{/if}}
+
+
+<!-- Proposal form -->
+<div class="row">
+	<div class="col-sm-6">
+		<h3>Proposals</h3>
+		<form method="post" action="/user/proposal/new/{{user.id}}/{{this.id}}">
+			<div class="form-group">
+				<label>Title</label>
+				<input type="text" class="form-control" placeholder="Title" name="subject">
+			</div>
+			<div class="form-group">
+				<label>Description</label>
+				<textarea class="form-control" name="body" rows="3"></textarea>
+			</div>
+			<button type="submit" class="btn btn-default">Create</button>
+		</form>
+		<hr>
+
+		<!-- List of Proposals -->
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<ul>
+					{{#each Proposals}}
+						<li>
+							<h5>{{this.subject}}</h5>
+							<p>{{this.body}}</p>
+							<hr>
+						</li>
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="col-sm-6">
+		<h3>Comments</h3>
+		<form method="post" action="/user/comments/new/{{user.id}}/{{this.id}}">
+			<div class="form-group">
+				<label>Description</label>
+				<textarea class="form-control" name="body" rows="3"></textarea>
+			</div>
+			<button type="submit" class="btn btn-default">Send</button>
+		</form>
+		<hr>
+		<!-- List of Comments -->
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<ul>
+					{{#each Comments}}
+						<li>
+							<p>{{this.body}}</p>
+							<hr>
+						</li>
+					{{/each}}
+				</ul>
+			</div>
+		</div>
+	</div>
+	</div>
+</div>

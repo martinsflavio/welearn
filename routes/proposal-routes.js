@@ -6,45 +6,35 @@ const express     = require('express'),
 
 
 /////////////////// proposal forms ///////////////////////////////
-router.post('/proposal/create/:userid/:projid', (req,res) => {
+router.post('/proposal/new/:userid/:projid', (req,res) => {
   let errors;
   let newProposal = {};
 
   // Validate
   req.checkBody('subject', 'Title is required').notEmpty();
-  req.checkBody('description', 'Description is required').notEmpty();
+  req.checkBody('body', 'Description is required').notEmpty();
 
   errors = req.validationErrors();
 
 
   if(errors){
-
-    res.render('add-project',{msg:errors});
+    
 
   } else {
-    newProposal.UserId      = req.params.id;
+    newProposal.UserId      = req.params.userid;
+    newProposal.ProjectId   = req.params.projid;
     newProposal.subject     = req.body.subject;
-    newProposal.description = req.body.description;
-
+    newProposal.body        = req.body.body;
   }
 
 
-  let query = {
-    subject   : req.body.subject,
-    body      : req.body.subject,
-    ProjectId : req.params.projid,
-    UserId    : req.params.userid
-  };
+  db.Proposals.create(newProposal).then(regProposal => {
+    let projId = regProposal.dataValues.ProjectId;
 
-
-  db.Proposals.create(query).then(regProposal => {
+    res.redirect(`/user/project/open/${projId}`);
 
   }).catch(err => {
-    let errorsList = [];
-    err.errors.forEach(dbErrors =>{
-      errorsList.push({msg : dbErrors.message});
-    });
-    render('add-project',{errors:errors});
+    res.render('error',err);
   });
 
 });
