@@ -6,7 +6,7 @@ const express     = require('express'),
 
 
 /////////////////// proposal forms ///////////////////////////////
-/*router.post('/proposal/new/:userid/:projid', (req,res) => {
+router.post('/proposal/new/:userid/:projid', (req,res) => {
   let errors;
   let newProposal = {};
 
@@ -40,6 +40,11 @@ const express     = require('express'),
 
 
 
-});*/
+});
+
+//////////////////// vote button //////////////////////////////
+router.post('/proposal/vote/:vote/:userid/:propid', (req,res)=> {
+  console.log(req.params);
+});
 
 module.exports = router;

@@ -32,7 +32,7 @@
 		</div>
 
 	</div>
-
+	{{user.id}}
 
 	<!-- Comments -->
 	<div class="col-sm-5">
@@ -58,10 +58,27 @@
 		<div class="panel panel-default">
 			<div class="panel-body">
 				{{#each Proposals}}
-					<p>{{this.body}}</p>
+					<div class="row">
+						<p>{{this.subject}}</p>
+						<p>{{this.body}}</p>
+						<div>
+							<button type="submit"
+											class="btn btn-success btn-sm pull-right like"
+											data-propid="{{this.id}}"
+											data-userid="{{../user.id}}"> -
+							</button>
+							<button type="submit"
+											class="btn btn-danger btn-sm pull-right dislike"
+											data-propid="{{this.id}}"
+											data-userid="{{../user.id}}"> +
+							</button>
+						</div>
+					</div>
+					<hr>
 				{{/each}}
 			</div>
 		</div>
 	</div>
-
 </div>
+
+<script src="/assets/js/project.js"></script>
