@@ -13,24 +13,23 @@ router.post('/proposal/new/:userid/:projid', (req,res) => {
   // Validate
   req.checkBody('subject', 'Title is required').notEmpty();
   req.checkBody('body', 'Description is required').notEmpty();
-  req.checkBody('type', 'Description is required').notEmpty();
 
   errors = req.validationErrors();
 
 
   if(errors){
-      res.render('project')
+      res.render('project');
 
   } else {
-    newProposal.UserId      = req.params.userid;
-    newProposal.ProjectId   = req.params.projid;
     newProposal.subject     = req.body.subject;
     newProposal.body        = req.body.body;
+    newProposal.UserId      = req.params.userid;
+    newProposal.ProjectId   = req.params.projid;
+
 
     db.Proposals.create(newProposal).then(regProposal => {
       let projId = regProposal.dataValues.ProjectId;
       res.redirect(`/user/project/open/${projId}`);
-
     }).catch(err => {
       res.render('error',err);
     });
@@ -43,8 +42,34 @@ router.post('/proposal/new/:userid/:projid', (req,res) => {
 });
 
 //////////////////// vote button //////////////////////////////
-router.post('/proposal/vote/:vote/:userid/:propid', (req,res)=> {
-  console.log(req.params);
+router.post('/proposal/vote/:vote/:userid/:propid/:projid', (req,res)=> {
+  let vote, query;
+
+  vote = {
+    vote       : req.params.vote,
+    UserId     : req.params.userid,
+    ProposalId : req.params.propid,
+    ProjectId  : req.params.projid
+  };
+
+  query = {
+    defaults: vote,
+    where: {
+      UserId    :vote.UserId,
+      ProposalId:vote.ProposalId,
+      ProjectId :vote.ProjectId
+    }
+  };
+
+  db.Votes.findOrCreate(query).then(regVote => {
+    let projId = regVote[0].dataValues.ProjectId;
+
+    res.redirect(`/user/project/open/${projId}`);
+
+  }).catch(err => {
+    res.render('error',err);
+  });
+
 });
 
 module.exports = router;

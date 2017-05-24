@@ -81,20 +81,25 @@ router.post('/project/new/:userid', (req,res) => {
 // open selected project on project view page
 router.get('/project/open/:projid', (req,res) => {
   let projId = req.params.projid;
+
   let query = {
-    where:{id: projId},
+    where:{id: projId}, attributes:['id','subject','description','UserId'],
     include: [
-      {model: db.Comments,
-        include:[{model: db.Users, attributes: ['username']}]},
-      {model: db.Proposals,
-        include:[{model: db.Users, attributes:['username']}]}
+      {model: db.Comments, attributes:['id','body','ProjectId'],
+        include:[{model: db.Users, attributes: ['id','username']}]},
+      {model: db.Proposals, attributes:['id','subject','body','ProjectId'],
+        include:[{model: db.Users, attributes:['id','username']},
+          {model: db.Votes, attributes: ['id','vote']}]},
+
     ]
   };
 
   db.Projects.findOne(query).then(regProject => {
     let project = regProject.dataValues;
 
-    res.render('project',project);
+
+    res.json(regProject);
+    //res.render('project',project);
   }).catch(err => {
     res.render('error',err);
   });
